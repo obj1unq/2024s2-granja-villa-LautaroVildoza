@@ -2,7 +2,9 @@ import wollok.game.*
 import hector.*
 import cultivos.*
 
+
 program farmville {
+	
 	//  CONFIG	
 	game.title("La granja de Héctor")
 	game.height(10)
@@ -11,7 +13,17 @@ program farmville {
 
 	//  VISUALES
  	game.addVisualCharacter(hector)
- 	game.addVisual(new Maiz()) // Se agrega a modo de prueba
+ 	game.addVisual(new Maiz(position = game.at(1,1))) // Se agrega a modo de prueba
+
+	//SEMBRAR
+	keyboard.m().onPressDo{hector.sembrarMaiz()}
+	keyboard.t().onPressDo{hector.sembrarTrigo()}
+	keyboard.o().onPressDo{hector.sembrarTomaco()}
+
+	//REGAR
+	keyboard.r().onPressDo{hector.regar()}
+
+
  	
  	//  COMIENZA
 	game.start()
