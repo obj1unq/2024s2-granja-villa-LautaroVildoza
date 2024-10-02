@@ -24,7 +24,9 @@ program farmville {
 	keyboard.r().onPressDo{hector.regar()}
 
 
- 	
+ 	//COSECHAR
+	keyboard.c().onPressDo{hector.cosechar()}
+
  	//  COMIENZA
 	game.start()
 }

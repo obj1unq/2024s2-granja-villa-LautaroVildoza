@@ -24,28 +24,64 @@ class Maiz {
 	method planta() {
 	  return true
 	}
+
+	method validarRegarP(posicion) {}
+
+	method cosechar() {
+	  self.validarCosechar()
+	  game.removeVisual(self)
+	}
+
+	method validarCosechar() {
+	  if (self.esBebe()){
+		self.error("No esta lista para cosechar")
+		game.say(self, "No esta lista para cosechar")
+	  }
+	}
 }
 
 
 class Trigo {
+	var etapaDeEvolucion = 0
 	var property position
 	var property evolucion = 0
+
+	method etapaDeEvolucion() {
+	  return etapaDeEvolucion
+	}
+
 	method image() {
 		// TODO: hacer que devuelva la imagen que corresponde
-		return "wheat_0.png"
+		return "wheat_"+ self.etapaDeEvolucion()+".png"
 	}
 
 
 	method plantar() {
+
 	  return game.addVisual(self)
 	}
 
 	method regar() {
-	  
+	  etapaDeEvolucion = (etapaDeEvolucion + 1) % 4
+	  return "wheat_"+ self.etapaDeEvolucion()+".png"
 	}
 	
 	method planta() {
 	  return true
+	}
+
+	method validarRegarP(posicion) {}
+
+	method cosechar() {
+	  self.validarCosechar()
+	  game.removeVisual(self)
+	}
+
+	method validarCosechar() {
+	  if ( etapaDeEvolucion < 2){
+		self.error("No esta lista para cosechar")
+		game.say(self, "No esta lista para cosechar")
+	  }
 	}
 }
 
@@ -64,4 +100,23 @@ class Tomaco {
 	method planta() {
 	  return true
 	}
+
+	method regar() {
+		//self.validarRegarP(posicion)
+	  position = position.up(1)
+	}
+
+	method validarRegarP(posicion) {
+	  if (posicion != (game.width() - 1)){
+		self.error("No puedo moverme para arriba")
+		game.say(self, "No puedo moverme para arriba")
+		}
+	}
+
+	method cosechar() {
+		self.validarCosechar()
+	  game.removeVisual(self)
+	}
+
+	method validarCosechar() {}
 }

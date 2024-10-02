@@ -1,9 +1,81 @@
-import example.pepita
+import wollok.game.*
+import hector.*
+import cultivos.*
 
-describe "group of tests for pepita" {
 
-  test "pepita has initial energy" {
-    assert.equals(100, pepita.energy())
+
+
+describe "Inicio" {
+
+  test "inicio" {
+    assert.equals([], hector.canasta())
+    assert.equals(false, hector.hayPlantas(hector.position()))
   }
 
+}
+
+describe "Sembrar" {
+  test "plantando Maiz" {
+    hector.sembrarMaiz()
+    assert.that(hector.hayPlantas(hector.position()))
+    assert.throwsException({hector.sembrarTomaco()})
+  }
+
+  test "plantando Tomato" {
+    hector.sembrarTomaco()
+    assert.that(hector.hayPlantas(hector.position()))
+    assert.throwsException({hector.sembrarTomaco()})
+  }
+  test "plantando Trigo" {
+    hector.sembrarTrigo()
+    assert.that(hector.hayPlantas(hector.position()))
+    assert.throwsException({hector.sembrarTomaco()})
+  }
+}
+
+describe "Regar Y Cosechar" {
+  test "regar Maiz y cosechar" {
+    hector.sembrarMaiz()
+    assert.that(hector.hayPlantas(hector.position()))
+    hector.regar()
+    hector.cosechar()
+    assert.notThat(hector.hayPlantas(hector.position()))
+  }
+
+  test "regar Tomaco y cosechar 1" {
+    hector.sembrarTomaco()
+    assert.that(hector.hayPlantas(hector.position()))
+    hector.regar()
+    assert.throwsException({ hector.cosechar() })
+    
+  }
+
+  test "regar Tomaco y cosechar 2" {
+    hector.sembrarTomaco()
+    hector.cosechar()
+    assert.notThat(hector.hayPlantas(hector.position()))
+
+  }
+
+  test "regar Trigo y cosechar 1" {
+    hector.sembrarTrigo()
+    hector.regar()
+    assert.throwsException({ hector.cosechar() })
+
+  }
+
+  test "regar Trigo y cosechar 2" {
+    hector.sembrarTrigo()
+    hector.regar()
+    assert.throwsException({ hector.cosechar() })
+    hector.regar()
+    hector.cosechar()
+    assert.notThat(hector.hayPlantas(hector.position()))
+  }
+}
+
+describe "Venta" {
+  test "description" {
+    
+  }
 }
