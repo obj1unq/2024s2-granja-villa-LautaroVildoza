@@ -1,3 +1,4 @@
+import aspersor.*
 import wollok.game.*
 import cultivos.*
 
@@ -5,6 +6,7 @@ import cultivos.*
 object hector {
 	var property position = game.center()
 	const property canasta = []
+	var oro =  0
 
 	const property image = "player.png"
 	method sembrarTrigo() {
@@ -67,4 +69,35 @@ object hector {
 		 canasta.add(planta)
 	}
 
+
+	//Venta
+	method vender() {
+		self.validarVenta()
+		const mercado = game.uniqueCollider(self)
+		const precioTotal = canasta.sum({cosa => cosa.precio()})
+		mercado.comprar(precioTotal)
+		mercado.darMercaderia(self.canasta())
+	  	oro += precioTotal
+		canasta.clear()
+	}
+
+	method cantOroYCantPlantas() {
+	   game.say(self, "Tengo" + oro + "monedas y" + canasta.size() + "plantas para vender!")
+	}
+
+	method validarVenta() {
+		const precioTotal = canasta.sum({cosa => cosa.precio()})
+		const mercado = game.uniqueCollider(self)
+	 	if(not mercado.esMercado() and not mercado.tieneDineroSuficiente(precioTotal)){
+			game.say(self, "No estoy en un mercado")
+	  }
+	}
+
+	//Aspersores
+	method colocarAspersor() {
+	  self.validarSembrar(self.position())
+	  const aspersor = new Aspersor(position = self.position())
+	  game.addVisual(aspersor)
+	  aspersor.regar()
+	}
 }

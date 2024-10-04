@@ -1,6 +1,7 @@
 import wollok.game.*
 import hector.*
 import cultivos.*
+import mercado.*
 
 
 program farmville {
@@ -14,6 +15,7 @@ program farmville {
 	//  VISUALES
  	game.addVisualCharacter(hector)
  	game.addVisual(new Maiz(position = game.at(1,1))) // Se agrega a modo de prueba
+	game.addVisual(new Mercado (position = game.at(3, 4), monedas = 12000))
 
 	//SEMBRAR
 	keyboard.m().onPressDo{hector.sembrarMaiz()}
@@ -26,6 +28,13 @@ program farmville {
 
  	//COSECHAR
 	keyboard.c().onPressDo{hector.cosechar()}
+
+	//VENTA
+	keyboard.v().onPressDo{hector.vender()}
+	keyboard.space().onPressDo{hector.cantOroYCantPlantas()}
+
+	//BONUS
+	keyboard.a().onPressDo{hector.colocarAspersor()}
 
  	//  COMIENZA
 	game.start()

@@ -5,6 +5,7 @@ class Maiz {
 	var property position
 	var property estado = "bebe"
 	var property image = "corn_baby.png"
+	const property precio = 150
 
 	method plantar() {
 		game.addVisual(self)
@@ -83,11 +84,16 @@ class Trigo {
 		game.say(self, "No esta lista para cosechar")
 	  }
 	}
+
+	method precio() {
+	  return (etapaDeEvolucion - 1) * 100
+	}
 }
 
 class Tomaco {
-  var property position
-
+  	var property position
+	const property precio = 80 
+	
 	method image() {
 		// TODO: hacer que devuelva la imagen que corresponde
 		return "tomaco.png"
