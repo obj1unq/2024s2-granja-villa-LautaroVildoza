@@ -1,7 +1,7 @@
 import aspersor.*
 import wollok.game.*
 import cultivos.*
-
+import mercado.*
 
 object hector {
 	var property position = game.center()
@@ -72,9 +72,10 @@ object hector {
 
 	//Venta
 	method vender() {
-		self.validarVenta()
 		const mercado = game.uniqueCollider(self)
 		const precioTotal = canasta.sum({cosa => cosa.precio()})
+		self.validarVenta(mercado)
+		mercado.validarCompra(precioTotal)
 		mercado.comprar(precioTotal)
 		mercado.darMercaderia(self.canasta())
 	  	oro += precioTotal
@@ -85,11 +86,10 @@ object hector {
 	   game.say(self, "Tengo" + oro + "monedas y" + canasta.size() + "plantas para vender!")
 	}
 
-	method validarVenta() {
-		const precioTotal = canasta.sum({cosa => cosa.precio()})
-		const mercado = game.uniqueCollider(self)
-	 	if(not mercado.esMercado() and not mercado.tieneDineroSuficiente(precioTotal)){
+	method validarVenta(mercado) {
+	 	if(not mercado.esMercado()){
 			game.say(self, "No estoy en un mercado")
+			self.error("No estoy en un mercado")
 	  }
 	}
 

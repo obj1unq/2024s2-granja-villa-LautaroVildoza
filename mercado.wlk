@@ -25,9 +25,10 @@ class Mercado {
     mercaderia.addAll(cosas)
   }
 
-  method tieneDineroSuficiente(precio) {
-    if (monedas < precio){
+  method validarCompra(precio) {
+    if (self.monedas() < precio){
         game.say(self, "No tengo dinero para comprarte todo")
+        self.error("No tengo dinero para comprarte todo")
     }
   }
 }

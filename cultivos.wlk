@@ -1,5 +1,7 @@
 import wollok.game.*
 import hector.*
+import granja.*
+
 
 class Maiz {
 	var property position
@@ -93,7 +95,7 @@ class Trigo {
 class Tomaco {
   	var property position
 	const property precio = 80 
-	
+
 	method image() {
 		// TODO: hacer que devuelva la imagen que corresponde
 		return "tomaco.png"
@@ -108,12 +110,13 @@ class Tomaco {
 	}
 
 	method regar() {
-		//self.validarRegarP(posicion)
+	self.validarRegarP(position)
 	  position = position.up(1)
 	}
 
 	method validarRegarP(posicion) {
-	  if (posicion != (game.width() - 1)){
+		const posicionA = position.up(1).y()
+	  if (posicionA == (granja.alto())){
 		self.error("No puedo moverme para arriba")
 		game.say(self, "No puedo moverme para arriba")
 		}
