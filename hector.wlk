@@ -93,11 +93,19 @@ object hector {
 	  }
 	}
 
+	method oro() {
+	  return oro
+	}
+
 	//Aspersores
 	method colocarAspersor() {
 	  self.validarSembrar(self.position())
 	  const aspersor = new Aspersor(position = self.position())
 	  game.addVisual(aspersor)
 	  aspersor.regar()
+	}
+
+	method puedeRegarse() {
+	  return false
 	}
 }

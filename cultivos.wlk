@@ -41,6 +41,10 @@ class Maiz {
 		game.say(self, "No esta lista para cosechar")
 	  }
 	}
+
+	method puedeRegarse() {
+    return true
+  }
 }
 
 
@@ -90,6 +94,10 @@ class Trigo {
 	method precio() {
 	  return (etapaDeEvolucion - 1) * 100
 	}
+
+	method puedeRegarse() {
+    return true
+  }
 }
 
 class Tomaco {
@@ -128,4 +136,8 @@ class Tomaco {
 	}
 
 	method validarCosechar() {}
+
+	method puedeRegarse() {
+    	return true
+  }
 }

@@ -31,5 +31,9 @@ class Mercado {
         self.error("No tengo dinero para comprarte todo")
     }
   }
+
+  method puedeRegarse() {
+    return false
+  }
 }
 

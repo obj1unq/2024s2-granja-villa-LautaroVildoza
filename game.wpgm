@@ -13,10 +13,10 @@ program farmville {
 	game.ground("ground.png")
 
 	//  VISUALES
- 	game.addVisualCharacter(hector)
- 	game.addVisual(new Maiz(position = game.at(1,1))) // Se agrega a modo de prueba
 	game.addVisual(new Mercado (position = game.at(3, 4), monedas = 12000))
 	game.addVisual(new Mercado (position = game.at(7, 7), monedas = 30))
+ 	game.addVisualCharacter(hector)
+ 	game.addVisual(new Maiz(position = game.at(1,1))) // Se agrega a modo de prueba
 
 	//SEMBRAR
 	keyboard.m().onPressDo{hector.sembrarMaiz()}

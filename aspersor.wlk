@@ -9,45 +9,49 @@ class Aspersor {
   }
 
   method regar() {
-    game.onTick(1000, "Regar cada 1 segundo sentido horario", {//self.validarRegar() and 
-    self.regarLimitrofes()})
+    game.schedule(1000, {self.regarLimitrofes()})
   }
 
-  //method validarRegar() {
-  //  if(not self.validarRegarArriba() and not self.validarRegarAbajo() and not self.validarRegarDer()
-  //          and not self.validarRegarIzq()){
-  //              self.error("No se puede Regar!")
-  //              game.say(self, "No se puede Regar!")
-  //          }
-  //}
-
   method validarRegarArriba() {
-    position = position.up(1)
-    return  game.uniqueCollider(self).planta()
-    position = position.down(1)
+     if (not  game.getObjectsIn(position.up(1)).any({cosa => cosa.puedeRegarse()})){
+      self.error("No se puede regar")
+      game.say(self, "No se puede regar!")
+    }
+        position.down(1)
   }
 
   method validarRegarAbajo() {
-    position = position.down(1)
-    return  game.uniqueCollider(self).planta()
+     if ( not game.getObjectsIn(position.down(1)).any({cosa => cosa.puedeRegarse()})){
+      self.error("No se puede regar")
+      game.say(self, "No se puede regar!")
+    }
+        position.up(1)
   }
 
   method validarRegarDer() {
-    position = position.right(1)
-    return  game.uniqueCollider(self).planta()
-    position = position.left(1)
+    if (not  game.getObjectsIn(position.right(1)).any({cosa => cosa.puedeRegarse()})){
+      self.error("No se puede regar")
+      game.say(self, "No se puede regar!")
+    }
+        position.left(1)
   }
 
   method validarRegarIzq() {
-    position = position.left(1)
-    return  game.uniqueCollider(self).planta()
-    position = position.right(1)
+     if ( not game.getObjectsIn(position.left(1)).any({cosa => cosa.puedeRegarse()})){
+      self.error("No se puede regar")
+      game.say(self, "No se puede regar!")
+    }
+         position.right(1)
   }
 
   method regarLimitrofes() {
+        self.validarRegarArriba()
         self.regarArriba()
+        self.validarRegarDer()
         self.regarDer()
+        self.validarRegarAbajo()
         self.regarAbajo()
+        self.validarRegarIzq()
         self.regarIzq()
   }
 
@@ -77,6 +81,10 @@ class Aspersor {
   }
 
   method planta() {
+    return false
+  }
+
+  method puedeRegarse() {
     return false
   }
 }

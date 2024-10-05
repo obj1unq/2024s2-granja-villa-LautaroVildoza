@@ -1,7 +1,7 @@
 import wollok.game.*
 import hector.*
 import cultivos.*
-
+import mercado.*
 
 
 
@@ -74,8 +74,43 @@ describe "Regar Y Cosechar" {
   }
 }
 
-describe "Venta" {
-  test "description" {
-    
+describe "Venta Con bonus" {
+  method inicialize (){
+  game.height(10)
+	game.width(10)
+  game.addVisual(new Mercado(position = game.at(1, 2), monedas = 12000))
+  game.addVisual(new Mercado(position = game.at(2, 1), monedas = 30))
+}
+
+  test "hector quiere vender en un lugar que no es un mercado" {
+    hector.sembrarMaiz()
+    assert.that(hector.hayPlantas(hector.position()))
+    hector.regar()
+    hector.cosechar()
+    assert.throwsException{hector.vender()}
+
+  }
+
+  test "hector vende sus cosechas" {
+    game.addVisual(new Mercado(position = game.at(1, 2), monedas = 12000))
+    hector.sembrarMaiz()
+    assert.that(hector.hayPlantas(hector.position()))
+    hector.regar()
+    hector.cosechar()
+    hector.position(game.at(1,2))
+    hector.vender()
+    assert.equals(150, hector.oro())
+  }
+
+  test "hector quiere vender sus cosechas pero el mercado no tiene el dinero suficiente" {
+    game.addVisual(new Mercado(position = game.at(2, 1), monedas = 30))
+    hector.sembrarMaiz()
+    assert.that(hector.hayPlantas(hector.position()))
+    hector.regar()
+    hector.cosechar()
+    hector.position(game.at(2,1))
+    assert.throwsExceptionWithMessage("No tengo dinero para comprarte todo", { hector.vender() })
+    assert.throwsException({ hector.vender() })
+  
   }
 }
