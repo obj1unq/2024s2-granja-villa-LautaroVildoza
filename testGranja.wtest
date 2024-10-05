@@ -1,9 +1,116 @@
-import example.pepita
+import wollok.game.*
+import hector.*
+import cultivos.*
+import mercado.*
 
-describe "group of tests for pepita" {
 
-  test "pepita has initial energy" {
-    assert.equals(100, pepita.energy())
+
+describe "Inicio" {
+
+  test "inicio" {
+    assert.equals([], hector.canasta())
+    assert.equals(false, hector.hayPlantas(hector.position()))
   }
 
+}
+
+describe "Sembrar" {
+  test "plantando Maiz" {
+    hector.sembrarMaiz()
+    assert.that(hector.hayPlantas(hector.position()))
+    assert.throwsException({hector.sembrarTomaco()})
+  }
+
+  test "plantando Tomato" {
+    hector.sembrarTomaco()
+    assert.that(hector.hayPlantas(hector.position()))
+    assert.throwsException({hector.sembrarTomaco()})
+  }
+  test "plantando Trigo" {
+    hector.sembrarTrigo()
+    assert.that(hector.hayPlantas(hector.position()))
+    assert.throwsException({hector.sembrarTomaco()})
+  }
+}
+
+describe "Regar Y Cosechar" {
+  test "regar Maiz y cosechar" {
+    hector.sembrarMaiz()
+    assert.that(hector.hayPlantas(hector.position()))
+    hector.regar()
+    hector.cosechar()
+    assert.notThat(hector.hayPlantas(hector.position()))
+  }
+
+  test "regar Tomaco y cosechar 1" {
+    hector.sembrarTomaco()
+    assert.that(hector.hayPlantas(hector.position()))
+    hector.regar()
+    assert.throwsException({ hector.cosechar() })
+    
+  }
+
+  test "regar Tomaco y cosechar 2" {
+    hector.sembrarTomaco()
+    hector.cosechar()
+    assert.notThat(hector.hayPlantas(hector.position()))
+
+  }
+
+  test "regar Trigo y cosechar 1" {
+    hector.sembrarTrigo()
+    hector.regar()
+    assert.throwsException({ hector.cosechar() })
+
+  }
+
+  test "regar Trigo y cosechar 2" {
+    hector.sembrarTrigo()
+    hector.regar()
+    assert.throwsException({ hector.cosechar() })
+    hector.regar()
+    hector.cosechar()
+    assert.notThat(hector.hayPlantas(hector.position()))
+  }
+}
+
+describe "Venta Con bonus" {
+  method inicialize (){
+  game.height(10)
+	game.width(10)
+  game.addVisual(new Mercado(position = game.at(1, 2), monedas = 12000))
+  game.addVisual(new Mercado(position = game.at(2, 1), monedas = 30))
+}
+
+  test "hector quiere vender en un lugar que no es un mercado" {
+    hector.sembrarMaiz()
+    assert.that(hector.hayPlantas(hector.position()))
+    hector.regar()
+    hector.cosechar()
+    assert.throwsException{hector.vender()}
+
+  }
+
+  test "hector vende sus cosechas" {
+    game.addVisual(new Mercado(position = game.at(1, 2), monedas = 12000))
+    hector.sembrarMaiz()
+    assert.that(hector.hayPlantas(hector.position()))
+    hector.regar()
+    hector.cosechar()
+    hector.position(game.at(1,2))
+    hector.vender()
+    assert.equals(150, hector.oro())
+  }
+
+  test "hector quiere vender sus cosechas pero el mercado no tiene el dinero suficiente" {
+    game.addVisual(new Mercado(position = game.at(2, 1), monedas = 30))
+    hector.sembrarMaiz()
+    assert.that(hector.hayPlantas(hector.position()))
+    hector.regar()
+    hector.cosechar()
+    hector.position(game.at(2,1))
+    assert.throwsExceptionWithMessage("No tengo dinero para comprarte todo", { hector.vender() })
+    assert.throwsException({ hector.vender() })
+  
+  }
 }
