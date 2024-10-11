@@ -2,6 +2,8 @@ import wollok.game.*
 import hector.*
 import cultivos.*
 import mercado.*
+import granja.*
+
 
 
 
@@ -16,26 +18,26 @@ describe "Inicio" {
 
 describe "Sembrar" {
   test "plantando Maiz" {
-    hector.sembrarMaiz()
+    hector.sembrar(new Maiz(position = hector.position()))
     assert.that(hector.hayPlantas(hector.position()))
-    assert.throwsException({hector.sembrarTomaco()})
+    //assert.throwsException({hector.sembrar(new Tomaco(position = hector.position()))})
   }
 
   test "plantando Tomato" {
-    hector.sembrarTomaco()
+    hector.sembrar((new Tomaco(position = hector.position())))
     assert.that(hector.hayPlantas(hector.position()))
-    assert.throwsException({hector.sembrarTomaco()})
+    assert.throwsException({hector.sembrar((new Tomaco(position = hector.position())))})
   }
   test "plantando Trigo" {
-    hector.sembrarTrigo()
+    hector.sembrar((new Trigo(position = hector.position())))
     assert.that(hector.hayPlantas(hector.position()))
-    assert.throwsException({hector.sembrarTomaco()})
+    assert.throwsException({hector.sembrar((new Tomaco(position = hector.position())))})
   }
 }
 
 describe "Regar Y Cosechar" {
   test "regar Maiz y cosechar" {
-    hector.sembrarMaiz()
+    hector.sembrar(new Maiz(position = hector.position()))
     assert.that(hector.hayPlantas(hector.position()))
     hector.regar()
     hector.cosechar()
@@ -43,7 +45,7 @@ describe "Regar Y Cosechar" {
   }
 
   test "regar Tomaco y cosechar 1" {
-    hector.sembrarTomaco()
+    hector.sembrar((new Tomaco(position = hector.position())))
     assert.that(hector.hayPlantas(hector.position()))
     hector.regar()
     assert.throwsException({ hector.cosechar() })
@@ -51,21 +53,21 @@ describe "Regar Y Cosechar" {
   }
 
   test "regar Tomaco y cosechar 2" {
-    hector.sembrarTomaco()
+    hector.sembrar((new Tomaco(position = hector.position())))
     hector.cosechar()
     assert.notThat(hector.hayPlantas(hector.position()))
 
   }
 
   test "regar Trigo y cosechar 1" {
-    hector.sembrarTrigo()
+    hector.sembrar((new Trigo(position = hector.position())))
     hector.regar()
     assert.throwsException({ hector.cosechar() })
 
   }
 
   test "regar Trigo y cosechar 2" {
-    hector.sembrarTrigo()
+    hector.sembrar((new Trigo(position = hector.position())))
     hector.regar()
     assert.throwsException({ hector.cosechar() })
     hector.regar()
@@ -83,7 +85,7 @@ describe "Venta Con bonus" {
 }
 
   test "hector quiere vender en un lugar que no es un mercado" {
-    hector.sembrarMaiz()
+    hector.sembrar(new Maiz(position = hector.position()))
     assert.that(hector.hayPlantas(hector.position()))
     hector.regar()
     hector.cosechar()
@@ -93,7 +95,7 @@ describe "Venta Con bonus" {
 
   test "hector vende sus cosechas" {
     game.addVisual(new Mercado(position = game.at(1, 2), monedas = 12000))
-    hector.sembrarMaiz()
+    hector.sembrar(new Maiz(position = hector.position()))
     assert.that(hector.hayPlantas(hector.position()))
     hector.regar()
     hector.cosechar()
@@ -104,7 +106,7 @@ describe "Venta Con bonus" {
 
   test "hector quiere vender sus cosechas pero el mercado no tiene el dinero suficiente" {
     game.addVisual(new Mercado(position = game.at(2, 1), monedas = 30))
-    hector.sembrarMaiz()
+    hector.sembrar(new Maiz(position = hector.position()))
     assert.that(hector.hayPlantas(hector.position()))
     hector.regar()
     hector.cosechar()

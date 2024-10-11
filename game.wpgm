@@ -19,9 +19,9 @@ program farmville {
  	game.addVisual(new Maiz(position = game.at(1,1))) // Se agrega a modo de prueba
 
 	//SEMBRAR
-	keyboard.m().onPressDo{hector.sembrarMaiz()}
-	keyboard.t().onPressDo{hector.sembrarTrigo()}
-	keyboard.o().onPressDo{hector.sembrarTomaco()}
+	keyboard.m().onPressDo{hector.sembrar(new Maiz (position = hector.position()))}
+	keyboard.t().onPressDo{hector.sembrar(new Trigo (position = hector.position()))}
+	keyboard.o().onPressDo{hector.sembrar(new Tomaco (position = hector.position()))}
 
 	//REGAR
 	keyboard.r().onPressDo{hector.regar()}

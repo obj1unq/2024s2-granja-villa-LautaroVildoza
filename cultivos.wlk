@@ -5,8 +5,8 @@ import granja.*
 
 class Maiz {
 	var property position
-	var property estado = "bebe"
-	var property image = "corn_baby.png"
+	var property estado = bebe
+	var property image = "corn_" + estado.image() + ".png"
 	const property precio = 150
 
 	method plantar() {
@@ -14,14 +14,12 @@ class Maiz {
 	}
 
 	method regar() {
-		if (self.esBebe()){
-			estado = "adulta"
-			image = "corn_adult.png"
-		}
+		estado.regar()
+		 image = "corn_" + estado.image() + ".png"
 	}
 
-	method esBebe() {
-	  return self.estado() == "bebe"
+	method regarse() {
+	  self.regar()
 	}
 
 	method planta() {
@@ -36,32 +34,47 @@ class Maiz {
 	}
 
 	method validarCosechar() {
-	  if (self.esBebe()){
+	  if (estado.esCosechable()){
 		self.error("No esta lista para cosechar")
 		game.say(self, "No esta lista para cosechar")
 	  }
 	}
 
 	method puedeRegarse() {
-    return true
+    	return true
   }
 }
 
+object bebe {
+	var property image = "baby"
+
+  method regar() {
+		  image = "adult"
+  }
+  method esCosechable() {
+	return false
+  }
+}
+
+object adulta {
+  const property image = "adult"
+
+  method regar() {}
+
+  method esCosechable() {
+	return true
+  }
+}
 
 class Trigo {
 	var etapaDeEvolucion = 0
 	var property position
 	var property evolucion = 0
+	var property image = "wheat_"+ self.etapaDeEvolucion()+".png"
 
 	method etapaDeEvolucion() {
 	  return etapaDeEvolucion
 	}
-
-	method image() {
-		// TODO: hacer que devuelva la imagen que corresponde
-		return "wheat_"+ self.etapaDeEvolucion()+".png"
-	}
-
 
 	method plantar() {
 
@@ -70,7 +83,7 @@ class Trigo {
 
 	method regar() {
 	  etapaDeEvolucion = (etapaDeEvolucion + 1) % 4
-	  return "wheat_"+ self.etapaDeEvolucion()+".png"
+	  image =  "wheat_"+ self.etapaDeEvolucion()+".png"
 	}
 	
 	method planta() {
@@ -98,6 +111,10 @@ class Trigo {
 	method puedeRegarse() {
     return true
   }
+
+  method regarse() {
+	  self.regar()
+	}
 }
 
 class Tomaco {
@@ -123,8 +140,8 @@ class Tomaco {
 	}
 
 	method validarRegarP(posicion) {
-		const posicionA = position.up(1).y()
-	  if (posicionA == (granja.alto())){
+		const posicionA = position.up(1)
+	  if (posicionA.y() == (granja.alto()) or !game.getObjectsIn(posicionA).isEmpty()){
 		self.error("No puedo moverme para arriba")
 		game.say(self, "No puedo moverme para arriba")
 		}
@@ -140,4 +157,8 @@ class Tomaco {
 	method puedeRegarse() {
     	return true
   }
+
+  method regarse() {
+	  self.regar()
+	}
 }

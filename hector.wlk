@@ -2,32 +2,27 @@ import aspersor.*
 import wollok.game.*
 import cultivos.*
 import mercado.*
+import granja.*
+
 
 object hector {
 	var property position = game.center()
 	const property canasta = []
+	const casa = granja
 	var oro =  0
 
 	const property image = "player.png"
-	method sembrarTrigo() {
-	   self.sembrar(new Trigo(position = self.position()))
-	}
 
 	//Sembrar
-	method sembrarTomaco() {
-	  self.sembrar(new Tomaco(position = self.position()))
-	}
 
-	method sembrarMaiz() {
-	  self.sembrar(new Maiz(position = self.position()))
-	}
 	method sembrar(cultivo) {
 		self.validarSembrar(self.position())
 		 cultivo.plantar()
+		 casa.agregar(cultivo)
 	}
 
 	method validarSembrar(posicion) {
-	  if( self.hayPlantas(posicion)){
+	  if( not self.hayPlantas(posicion)){
 		self.error("Ya hay una planta aqui!")
 		game.say(self, "Ya hay una planta aqui!")
 	  }
@@ -42,13 +37,15 @@ object hector {
 
 	//Validaciones
 	method validarRegar(posicion) {
-	 if( not self.hayPlantas(posicion)){
+	 if(  not self.hayPlantas(posicion)){
 		game.say(self, "No tengo nada para regar")
+		self.error("No tengo nada para regar")
 	  }
 	}
 
+
 	method hayPlantas(posicion){
-	  return game.getObjectsIn(posicion).any({cosa => cosa.planta()})
+	   return  casa.hayEn(posicion)
 	}
 
 	method planta() {
@@ -58,6 +55,7 @@ object hector {
 	method validarCosechar(posicion) {
 	  if( not self.hayPlantas(posicion)){
 		game.say(self, "No tengo nada para cosechar")
+		self.error("No tengo nada para cosechar")
 	  }
 	}
 
@@ -67,6 +65,7 @@ object hector {
 		 const planta = game.uniqueCollider(self)
 		 planta.cosechar()
 		 canasta.add(planta)
+		 casa.remover(planta)
 	}
 
 
@@ -102,10 +101,13 @@ object hector {
 	  self.validarSembrar(self.position())
 	  const aspersor = new Aspersor(position = self.position())
 	  game.addVisual(aspersor)
-	  aspersor.regar()
+	  aspersor.regarAspersor()
 	}
 
 	method puedeRegarse() {
 	  return false
+	}
+
+	method regarse() {
 	}
 }
